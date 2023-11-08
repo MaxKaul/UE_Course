@@ -66,6 +66,8 @@ void AUE5_BeginnerCourseCharacter::BeginPlay()
 	}
 }
 
+
+
 //////////////////////////////////////////////////////////////////////////
 // Input
 
@@ -83,6 +85,7 @@ void AUE5_BeginnerCourseCharacter::SetupPlayerInputComponent(class UInputCompone
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AUE5_BeginnerCourseCharacter::Look);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Completed, this, &AUE5_BeginnerCourseCharacter::LookEnd);
 
 	}
 
@@ -121,7 +124,14 @@ void AUE5_BeginnerCourseCharacter::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+
+		currYaw = LookAxisVector.X;
 	}
+}
+
+void AUE5_BeginnerCourseCharacter::LookEnd(const FInputActionValue& Value)
+{
+	currYaw = 0.0f;
 }
 
 

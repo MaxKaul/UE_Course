@@ -5,7 +5,10 @@
 #include "CoreMinimal.h"
 #include "UE5_BeginnerCourseCharacter.h"
 #include "Animation/AnimInstance.h"
+#include <Components/TimelineComponent.h>
 #include "BCAnimInstance.generated.h"
+
+
 
 /**
  * 
@@ -28,7 +31,30 @@ private:
 
 	float playerVelocity;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PlayerComps, meta = (AllowPrivateAccess))
+	bool isJumping;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PlayerComps, meta = (AllowPrivateAccess))
+
+	float sideStrength;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PlayerComps, meta = (AllowPrivateAccess))
+
+	float sideStrengthDefault;
+
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = PlayerComps, meta = (AllowPrivateAccess))
+	UCurveFloat* curveFloat;
+	FTimeline curveTimeline;
+
+
+
+	UFUNCTION()
+
+		void BeginTimeline();
+
+	UFUNCTION()
+		void TickTimeline(float _deltaTime);
 };
 
 
