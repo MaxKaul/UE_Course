@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "Components/TimelineComponent.h"
 #include "BCAnimInstance.generated.h"
 
 /**
@@ -24,4 +25,22 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PlayerComps, meta = (AllowPrivateAccess))
 		float playerVelocity;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PlayerComps, meta = (AllowPrivateAccess))
+		bool bIsJumping;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PlayerComps, meta = (AllowPrivateAccess))
+		float sideStrenght;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PlayerComps, meta = (AllowPrivateAccess))
+		float sideStrenghtDefault;
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category=PlayerComps,meta=(AllowPrivateAccess))
+		UCurveFloat* curveFloat;
+
+	FTimeline curveTimeline;
+
+private:
+	UFUNCTION()
+		void BeginTimeline();
+
+	UFUNCTION()
+		void TickTimeline(float _deltaTime);
 };
