@@ -41,17 +41,17 @@ void UBCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	}
 
 	if (player->GetCurrentYaw() > 0)
-		sideStrenght = sideStrenghtDefault * 2;
+		leaningState = ELeaningState::LS_LeanRight;
 	else if (player->GetCurrentYaw() < 0)
-		sideStrenght = 0;
+		leaningState = ELeaningState::LS_LeanLeft;
 
-	if (curveTimeline.IsPlaying())
-		curveTimeline.TickTimeline(DeltaSeconds);
+	BeginTimeline();
+	curveTimeline.TickTimeline(DeltaSeconds);
 }
 
 void UBCAnimInstance::BeginTimeline()
 {
-	if (!curveTimeline.IsPlaying())
+	if (curveTimeline.IsPlaying())
 		return;
 
 	FOnTimelineFloat timelineprogress;
@@ -68,5 +68,20 @@ void UBCAnimInstance::BeginTimeline()
 
 void UBCAnimInstance::TickTimeline(float _deltaTime)
 {
+	switch (leaningState)
+	{
+	case ELeaningState::LS_LeanRight:
+		if (sideStrenght < 99.f)
+			sideStrenght = FMath::Lerp(sideStrenght, sideStrenght * 2, _deltaTime / 100.f);
+		break;
+	case ELeaningState::LS_LeanLeft:
+		if(sideStrenght > 1.f)
+			sideStrenght = FMath::Lerp(sideStrenght, 0, _deltaTime / 100.f);
+		break;
 
+	default: 
+		sideStrenght = sideStrenghtDefault;
+		break;
+		
+	}
 }

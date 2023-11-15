@@ -2,6 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "EnumLibrary.h"
 #include "Animation/AnimInstance.h"
 #include "Components/TimelineComponent.h"
 #include "BCAnimInstance.generated.h"
@@ -36,6 +37,8 @@ private:
 		UCurveFloat* curveFloat;
 
 	FTimeline curveTimeline;
+
+	ELeaningState leaningState;
 
 private:
 	UFUNCTION()
