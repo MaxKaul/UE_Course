@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "PlayerInteractor.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -49,6 +50,7 @@ AUE5_BeginnerCourseCharacter::AUE5_BeginnerCourseCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+	playerInteractor = CreateDefaultSubobject<UPlayerInteractor>("Player Interactor");
 }
 
 void AUE5_BeginnerCourseCharacter::BeginPlay()

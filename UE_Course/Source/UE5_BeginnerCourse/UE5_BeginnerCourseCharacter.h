@@ -70,5 +70,9 @@ private:
 	UPROPERTY()
 		float currYaw;
 
+	UPROPERTY(EditAnyWhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
+		class UPlayerInteractor* playerInteractor;
+	
+
 };
 

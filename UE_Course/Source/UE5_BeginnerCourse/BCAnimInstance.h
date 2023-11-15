@@ -1,12 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
+#include "EnumLibrary.h"
 #include "CoreMinimal.h"
 #include "UE5_BeginnerCourseCharacter.h"
 #include "Animation/AnimInstance.h"
 #include <Components/TimelineComponent.h>
 #include "BCAnimInstance.generated.h"
+
 
 
 
@@ -46,7 +47,7 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = PlayerComps, meta = (AllowPrivateAccess))
 	UCurveFloat* curveFloat;
 	FTimeline curveTimeline;
-
+	ELeaningState leaningState;
 
 
 	UFUNCTION()
