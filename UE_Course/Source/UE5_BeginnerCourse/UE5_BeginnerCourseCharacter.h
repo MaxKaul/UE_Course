@@ -49,7 +49,6 @@ protected:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 	void LookEnd(const FInputActionValue& Value);
-	
 
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -63,16 +62,13 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
-
-	FORCEINLINE float GetCurrentYaw() { return currYaw; };
+	FORCEINLINE
+		float GetCurrentYaw() { return currYaw; }
 
 private:
 	UPROPERTY()
 		float currYaw;
 
-	UPROPERTY(EditAnyWhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly,Category=Comps, meta = (AllowPrivateAccess))
 		class UPlayerInteractor* playerInteractor;
-	
-
 };
-

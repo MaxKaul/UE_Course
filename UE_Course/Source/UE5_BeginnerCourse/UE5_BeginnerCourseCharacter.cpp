@@ -48,8 +48,6 @@ AUE5_BeginnerCourseCharacter::AUE5_BeginnerCourseCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 	playerInteractor = CreateDefaultSubobject<UPlayerInteractor>("Player Interactor");
 }
 
@@ -67,7 +65,6 @@ void AUE5_BeginnerCourseCharacter::BeginPlay()
 		}
 	}
 }
-
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -91,6 +88,11 @@ void AUE5_BeginnerCourseCharacter::SetupPlayerInputComponent(class UInputCompone
 
 	}
 
+}
+
+void AUE5_BeginnerCourseCharacter::LookEnd(const FInputActionValue& Value)
+{
+	currYaw = 0.f;
 }
 
 void AUE5_BeginnerCourseCharacter::Move(const FInputActionValue& Value)
@@ -129,11 +131,6 @@ void AUE5_BeginnerCourseCharacter::Look(const FInputActionValue& Value)
 
 		currYaw = LookAxisVector.X;
 	}
-}
-
-void AUE5_BeginnerCourseCharacter::LookEnd(const FInputActionValue& Value)
-{
-	currYaw = 0.0f;
 }
 
 
