@@ -3,7 +3,9 @@
 
 #include "MovingPlattform.h"
 
+#include "MyButton.h"
 #include "SplineClass.h"
+#include "UE5_BeginnerCourseCharacter.h"
 #include "Components/SplineComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -13,11 +15,16 @@ AMovingPlattform::AMovingPlattform()
 }
 
 void AMovingPlattform::OnPlayerInteraction_OnOverlapBegin(UPrimitiveComponent* _overlapComp, AActor* _otherActor,
-                                                          UPrimitiveComponent* _otherComp, int32 _otherBodyIdx, bool _bFromSweep, const FHitResult& _sweepResult)
+	UPrimitiveComponent* _otherComp, int32 _otherBodyIdx, bool _bFromSweep, const FHitResult& _sweepResult)
 {
 	Super::OnPlayerInteraction_OnOverlapBegin(_overlapComp, _otherActor, _otherComp, _otherBodyIdx, _bFromSweep,
 		_sweepResult);
 
+	if (AUE5_BeginnerCourseCharacter* otherPlayer = Cast<AUE5_BeginnerCourseCharacter>(_otherActor))
+	{
+		if (!_otherComp->ComponentHasTag("PlayerInteractor") && GetConditionsMet())
+			OnPlayerInteract();
+	}
 
 }
 
@@ -26,7 +33,11 @@ void AMovingPlattform::OnPlayerInteraction_OnOverlapEnd(UPrimitiveComponent* _ov
 {
 	Super::OnPlayerInteraction_OnOverlapEnd(_overlapComp, _otherActor, _otherComp, _otherBodyIdx);
 
-
+	//if (AUE5_BeginnerCourseCharacter* otherPlayer = Cast<AUE5_BeginnerCourseCharacter>(_otherActor))
+	//{
+	//	if (!_otherComp->ComponentHasTag("PlayerInteractor"))
+	//		OnPlayerInteract();
+	//}
 }
 
 void AMovingPlattform::Tick(float DeltaSeconds)
@@ -40,14 +51,108 @@ void AMovingPlattform::Tick(float DeltaSeconds)
 void AMovingPlattform::BeginPlay()
 {
 	Super::BeginPlay();
+
+	InitConditions();
 }
 
 void AMovingPlattform::OnPlayerInteract()
 {
 	Super::OnPlayerInteract();
 
-	if(!curveTimeline.IsPlaying())
+	if (!curveTimeline.IsPlaying())
 		BeginTimeline();
+}
+
+void AMovingPlattform::InitConditions()
+{
+	FConditionTableBase* currRow = new FConditionTableBase;
+
+	for (TTuple<FName, unsigned char*> row : combinationDataTable->GetRowMap())
+	{
+		if (reinterpret_cast<FConditionTableBase*>(row.Value)->rowContent == rowContentID)
+			currRow = reinterpret_cast<FConditionTableBase*>(row.Value);
+	}
+
+	for (TTuple<int, FConditionRowBase> rowContentMap : currRow->conditionMap)
+	{
+		if (rowContentMap.Key == mapContentID)
+		{
+			activatedCondition = rowContentMap.Value;
+			break;
+		}
+	}
+
+	for (size_t i = 0; i < conditionButtons.Num(); i++)
+	{
+		conditionButtons[i]->SetButtonOwner(this, i);
+	}
+}
+
+void AMovingPlattform::ResetConditions()
+{
+	for (AMyButton* button : conditionButtons)
+	{
+		button->SetButtonInactive();
+	}
+
+	activationCombination_Fill.Empty();
+}
+
+void AMovingPlattform::ConditionCallback(bool _status, int _objectID)
+{
+	if (_status)
+	{
+		if (!activationCombination_Fill.Contains(_objectID))
+			activationCombination_Fill.Add(_objectID);
+	}
+	else if (!_status)
+	{
+		if (activationCombination_Fill.Contains(_objectID))
+		{
+			activationCombination_Fill.Remove(_objectID);
+			bConditionMet = false;
+		}
+	}
+
+	if (activationCombination_Fill.Num() == activatedCondition.conditionCombination.Num())
+	{
+		bool isValid = true;
+
+		for (size_t i = 0; i < activationCombination_Fill.Num(); i++)
+		{
+			if (activationCombination_Fill[i] != activatedCondition.conditionCombination[i])
+			{
+				isValid = false;
+				break;
+			}
+		}
+
+		if (!isValid)
+			ResetConditions();
+
+		bConditionMet = isValid;
+	}
+	else if (activationCombination_Fill.Num() > activatedCondition.conditionCombination.Num())
+		ResetConditions();
+	else if (activationCombination_Fill.Num() > conditionButtons.Num())
+		ResetConditions();
+}
+
+bool AMovingPlattform::GetConditionsMet()
+{
+	bool status = false;
+	int valids = 0;
+
+	for (AMyButton* button : conditionButtons)
+	{
+		if (button->WasInteracted())
+			valids++;
+	}
+
+	if (valids >= conditionButtons.Num())
+		status = true;
+
+	return status;
 }
 
 void AMovingPlattform::BeginTimeline()
@@ -62,7 +167,7 @@ void AMovingPlattform::BeginTimeline()
 
 	curveTimeline.AddInterpFloat(curveFloat, timelineprogress);
 
-	if(FMath::IsNearlyEqual(lerpDistance, splineClassRef->GetSplineComponent()->GetSplineLength()))
+	if (FMath::IsNearlyEqual(lerpDistance, splineClassRef->GetSplineComponent()->GetSplineLength()))
 		bHasReachedEnd = true;
 	else if (FMath::IsNearlyEqual(lerpDistance, 0))
 		bHasReachedEnd = false;
@@ -72,12 +177,12 @@ void AMovingPlattform::BeginTimeline()
 
 void AMovingPlattform::TickTimeline(float _alpha)
 {
-	if(!bHasReachedEnd)
+	if (!bHasReachedEnd)
 	{
 		lerpDistance = UKismetMathLibrary::Lerp(0, splineClassRef->GetSplineComponent()->GetSplineLength(), _alpha);
 		SetActorLocation(splineClassRef->GetSplineComponent()->GetLocationAtDistanceAlongSpline(lerpDistance, ESplineCoordinateSpace::World));
 	}
-	else if(bHasReachedEnd)
+	else if (bHasReachedEnd)
 	{
 		lerpDistance = UKismetMathLibrary::Lerp(splineClassRef->GetSplineComponent()->GetSplineLength(), 0, _alpha);
 		SetActorLocation(splineClassRef->GetSplineComponent()->GetLocationAtDistanceAlongSpline(lerpDistance, ESplineCoordinateSpace::World));

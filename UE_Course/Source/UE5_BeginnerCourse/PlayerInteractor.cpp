@@ -3,6 +3,7 @@
 
 #include "PlayerInteractor.h"
 
+#include "MyButton.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "UE5_BeginnerCourseCharacter.h"
 #include "Kismet/GameplayStatics.h"
@@ -70,11 +71,14 @@ void UPlayerInteractor::TraceInteractable()
 	{
 		for (size_t i = 0; i < viewPoint->GetMaterials().Num(); i++)
 		{
-			if(viewPoint->GetMaterial(i))
+			if (viewPoint->GetMaterial(i))
 				viewPoint->SetMaterial(i, normalMaterial);
 		}
 
 		viewPoint->SetWorldLocation(hit.ImpactPoint, false, nullptr, ETeleportType::None);
+
+		if (AMyButton* button = Cast<AMyButton>(hit.GetActor()))
+			owner->SetCurrentButton(button);
 	}
 	else
 	{

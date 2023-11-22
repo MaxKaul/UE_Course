@@ -3,12 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ConditionLibrary.h"
 #include "InteractableBase.h"
 #include "Components/TimelineComponent.h"
+#include "Engine/DataTable.h"
 #include "MovingPlattform.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class UE5_BEGINNERCOURSE_API AMovingPlattform : public AInteractableBase
@@ -16,6 +18,10 @@ class UE5_BEGINNERCOURSE_API AMovingPlattform : public AInteractableBase
 	GENERATED_BODY()
 
 		AMovingPlattform();
+
+public:
+	UFUNCTION()
+		virtual void ConditionCallback(bool _status, int _objectID);
 
 protected:
 	virtual void OnPlayerInteraction_OnOverlapBegin(UPrimitiveComponent* _overlapComp, AActor* _otherActor, UPrimitiveComponent* _otherComp, int32 _otherBodyIdx, bool _bFromSweep, const FHitResult& _sweepResult) override;
@@ -25,23 +31,20 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void OnPlayerInteract() override;
 
-	FORCEINLINE
-		virtual bool GetConditionsMet() { return bConditionMet; }
+	UFUNCTION()
+		virtual void InitConditions();
+	UFUNCTION()
+		virtual void ResetConditions();
 
-	FORCEINLINE
-		virtual void SetConditionsMet(bool _status) {  bConditionMet = _status; }
-
-	FORCEINLINE
-		virtual bool Conditional_Start_End() { return bConditional_Start_End; }
-	FORCEINLINE
-		virtual bool Conditional_End_Start() { return bConditional_End_Start; }
+	UFUNCTION()
+		virtual bool GetConditionsMet();
 
 	UFUNCTION()
 		void BeginTimeline();
 	UFUNCTION()
 		void TickTimeline(float _alpha);
 
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category=Infos, meta=(AllowPrivateAccess))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Infos, meta = (AllowPrivateAccess))
 		float completionTime;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Infos, meta = (AllowPrivateAccess))
 		class ASplineClass* splineClassRef;
@@ -52,11 +55,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Infos, meta = (AllowPrivateAccess))
 		class AUE5_BeginnerCourseCharacter* player;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Infos, meta = (AllowPrivateAccess))
-		bool bConditional_Start_End;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Infos, meta = (AllowPrivateAccess))
-		bool bConditional_End_Start;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
+		TArray<class AMyButton*> conditionButtons;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Infos, meta = (AllowPrivateAccess))
 		bool bConditionMet;
@@ -65,4 +65,19 @@ protected:
 		UCurveFloat* curveFloat;
 
 	FTimeline curveTimeline;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
+		UDataTable* combinationDataTable;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
+		FConditionRowBase activatedCondition;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
+		TArray<int> activationCombination_Fill;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
+		FName rowContentID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
+		int mapContentID;
 };
