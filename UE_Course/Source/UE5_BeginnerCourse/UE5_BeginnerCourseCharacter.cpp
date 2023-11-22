@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "MyButton.h"
 #include "PlayerInteractor.h"
 
 
@@ -66,6 +67,15 @@ void AUE5_BeginnerCourseCharacter::BeginPlay()
 	}
 }
 
+void AUE5_BeginnerCourseCharacter::Interact()
+{
+	if(!currentButton)
+	{
+		
+	}
+	currentButton->OnPlayerInteract();
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 // Input
@@ -85,6 +95,8 @@ void AUE5_BeginnerCourseCharacter::SetupPlayerInputComponent(class UInputCompone
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AUE5_BeginnerCourseCharacter::Look);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Completed, this, &AUE5_BeginnerCourseCharacter::LookEnd);
+
+		EnhancedInputComponent->BindAction(LeftClickAction, ETriggerEvent::Completed, this, &AUE5_BeginnerCourseCharacter::Interact);
 
 	}
 

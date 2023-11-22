@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ConditionLibrary.h"
 #include "InteractableBase.h"
 #include "Components/TimelineComponent.h"
 #include "MovingPlattform.generated.h"
@@ -25,16 +26,17 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void OnPlayerInteract() override;
 
-	FORCEINLINE
-		virtual bool GetConditionsMet() { return bConditionMet; }
+	UFUNCTION()
+		virtual void InitConditons();
+	UFUNCTION()
+		virtual void ResetConditons();
+public:
+	UFUNCTION()
+		virtual void ConditonCallback(bool _status,int _objectID);
 
-	FORCEINLINE
-		virtual void SetConditionsMet(bool _status) {  bConditionMet = _status; }
-
-	FORCEINLINE
-		virtual bool Conditional_Start_End() { return bConditional_Start_End; }
-	FORCEINLINE
-		virtual bool Conditional_End_Start() { return bConditional_End_Start; }
+protected:
+	UFUNCTION()
+		virtual bool GetConditionsMet();
 
 	UFUNCTION()
 		void BeginTimeline();
@@ -51,12 +53,8 @@ protected:
 		float lerpDistance;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Infos, meta = (AllowPrivateAccess))
 		class AUE5_BeginnerCourseCharacter* player;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Infos, meta = (AllowPrivateAccess))
-		bool bConditional_Start_End;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Infos, meta = (AllowPrivateAccess))
-		bool bConditional_End_Start;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
+		TArray<class AMyButton*> conditionButtons;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Infos, meta = (AllowPrivateAccess))
 		bool bConditionMet;
@@ -65,4 +63,15 @@ protected:
 		UCurveFloat* curveFloat;
 
 	FTimeline curveTimeline;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
+		class UDataTable* combiDataTable;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
+		FConditionRowBase activationCondition;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
+		TArray<int> activationCombination_Fill;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
+		FName rowContentID;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
+		int mapContentID;
 };

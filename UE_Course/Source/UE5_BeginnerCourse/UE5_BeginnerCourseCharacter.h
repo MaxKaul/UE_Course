@@ -37,6 +37,9 @@ class AUE5_BeginnerCourseCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* LeftClickAction;
+
 public:
 	AUE5_BeginnerCourseCharacter();
 	
@@ -55,6 +58,7 @@ protected:
 	
 	// To add mapping context
 	virtual void BeginPlay();
+	virtual void Interact();
 
 public:
 	/** Returns CameraBoom subobject **/
@@ -64,6 +68,8 @@ public:
 
 	FORCEINLINE
 		float GetCurrentYaw() { return currYaw; }
+	UFUNCTION(BlueprintCallable) FORCEINLINE
+		void SetCurrentButton(class AMyButton* _currButton) { currentButton = _currButton; };
 
 private:
 	UPROPERTY()
@@ -71,4 +77,7 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly,Category=Comps, meta = (AllowPrivateAccess))
 		class UPlayerInteractor* playerInteractor;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
+		class AMyButton* currentButton;
+
 };

@@ -22,6 +22,7 @@ protected:
 	UFUNCTION()
 	virtual void OnPlayerInteraction_OnOverlapEnd(UPrimitiveComponent* _overlapComp, AActor* _otherActor, UPrimitiveComponent* _otherComp, int32 _otherBodyIdx);
 
+public:
 	UFUNCTION()
 	virtual void OnPlayerInteract();
 
