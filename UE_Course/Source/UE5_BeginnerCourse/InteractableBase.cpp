@@ -38,15 +38,13 @@ void AInteractableBase::Tick(float DeltaTime)
 void AInteractableBase::OnPlayerInteraction_OnOverlapBegin(UPrimitiveComponent* _overlapComp, AActor* _otherActor,
 	UPrimitiveComponent* _otherComp, int32 _otherBodyIdx, bool _bFromSweep, const FHitResult& _sweepResult)
 {
-	if (AUE5_BeginnerCourseCharacter* player = Cast<AUE5_BeginnerCourseCharacter>(_otherActor))
-		OnPlayerInteract();
+
 }
 
 void AInteractableBase::OnPlayerInteraction_OnOverlapEnd(UPrimitiveComponent* _overlapComp, AActor* _otherActor,
 	UPrimitiveComponent* _otherComp, int32 _otherBodyIdx)
 {
-	if (AUE5_BeginnerCourseCharacter* player = Cast<AUE5_BeginnerCourseCharacter>(_otherActor))
-		OnPlayerInteract();
+
 }
 
 void AInteractableBase::OnPlayerInteract()

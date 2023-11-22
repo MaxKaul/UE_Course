@@ -14,6 +14,9 @@ class UE5_BEGINNERCOURSE_API AInteractableBase : public AActor
 public:	
 	AInteractableBase();
 
+	UFUNCTION()
+		virtual void OnPlayerInteract();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -21,9 +24,6 @@ protected:
 	virtual void OnPlayerInteraction_OnOverlapBegin(UPrimitiveComponent* _overlapComp, AActor* _otherActor, UPrimitiveComponent* _otherComp, int32 _otherBodyIdx, bool _bFromSweep, const FHitResult& _sweepResult);
 	UFUNCTION()
 	virtual void OnPlayerInteraction_OnOverlapEnd(UPrimitiveComponent* _overlapComp, AActor* _otherActor, UPrimitiveComponent* _otherComp, int32 _otherBodyIdx);
-
-	UFUNCTION()
-	virtual void OnPlayerInteract();
 
 	UPROPERTY(VisibleAnywhere,Category = Infos, meta=(AllowPrivateAccess))
 	bool bWasInteracted;

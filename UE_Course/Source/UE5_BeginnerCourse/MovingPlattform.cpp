@@ -4,6 +4,8 @@
 #include "MovingPlattform.h"
 
 #include "SplineClass.h"
+#include "UE5_BeginnerCourseCharacter.h"
+#include "MyButton.h"
 #include "Components/SplineComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -18,7 +20,11 @@ void AMovingPlattform::OnPlayerInteraction_OnOverlapBegin(UPrimitiveComponent* _
 	Super::OnPlayerInteraction_OnOverlapBegin(_overlapComp, _otherActor, _otherComp, _otherBodyIdx, _bFromSweep,
 		_sweepResult);
 
-
+	if (AUE5_BeginnerCourseCharacter* otherplayer = Cast<AUE5_BeginnerCourseCharacter>(_otherActor))
+	{
+		if (!_otherComp->ComponentHasTag("PlayerInteractor") && GetConditionsMet())
+			OnPlayerInteract();
+	}
 }
 
 void AMovingPlattform::OnPlayerInteraction_OnOverlapEnd(UPrimitiveComponent* _overlapComp, AActor* _otherActor,
@@ -26,7 +32,11 @@ void AMovingPlattform::OnPlayerInteraction_OnOverlapEnd(UPrimitiveComponent* _ov
 {
 	Super::OnPlayerInteraction_OnOverlapEnd(_overlapComp, _otherActor, _otherComp, _otherBodyIdx);
 
-
+		//if (AUE5_BeginnerCourseCharacter* otherplayer = Cast<AUE5_BeginnerCourseCharacter>(_otherActor))
+		//{
+		//if (!_otherComp->ComponentHasTag("PlayerInteractor"))
+		//	OnPlayerInteract();
+		//}
 }
 
 void AMovingPlattform::Tick(float DeltaSeconds)
@@ -40,6 +50,8 @@ void AMovingPlattform::Tick(float DeltaSeconds)
 void AMovingPlattform::BeginPlay()
 {
 	Super::BeginPlay();
+
+	InitConditions();
 }
 
 void AMovingPlattform::OnPlayerInteract()
@@ -48,6 +60,99 @@ void AMovingPlattform::OnPlayerInteract()
 
 	if(!curveTimeline.IsPlaying())
 		BeginTimeline();
+}
+
+void AMovingPlattform::InitConditions()
+{
+	FConditionTableBase* currrow = new FConditionTableBase;
+
+	for(TTuple<FName, unsigned char*> row : combiDataTable->GetRowMap())
+	{
+		if (reinterpret_cast<FConditionTableBase*>(row.Value)->rowContent == rowContentID)
+			currrow = reinterpret_cast<FConditionTableBase*>(row.Value);
+	}
+
+	for(TTuple<int, FConditionRowBase> rowcontentmap : currrow->conditionMap)
+	{
+		if (rowcontentmap.Key == mapContentID)
+		{
+			activationCondition = rowcontentmap.Value;
+			break;
+		}
+	}
+
+	for (size_t i = 0; i < conditionButtons.Num(); i++)
+	{
+		conditionButtons[i]->SetButtonOwner(this, i);
+	}
+}
+
+void AMovingPlattform::ResetConditions()
+{
+	for (AMyButton* button : conditionButtons)
+	{
+		button->SetButtonInactive();
+	}
+
+	activationCombination_Fill.Empty();
+}
+
+void AMovingPlattform::ConditionCallback(bool _status, int _objectID)
+{
+	if(_status)
+	{
+		if (!activationCombination_Fill.Contains(_objectID))
+			activationCombination_Fill.Add(_objectID);
+	}
+	else if(!_status)
+	{
+		if(activationCombination_Fill.Contains(_objectID))
+		{
+			activationCombination_Fill.Remove(_objectID);
+			bConditionMet = false;
+		}
+	}
+
+	if (activationCombination_Fill.Num() == activationCondition.conditionCombination.Num())
+	{
+		bool bisvalid = true;
+
+		for (size_t i = 0; i < activationCombination_Fill.Num(); i++)
+		{
+			if (activationCombination_Fill[i] != activationCondition.conditionCombination[i])
+			{
+				bisvalid = false;
+				break;
+			}
+		}
+
+		if (!bisvalid)
+			ResetConditions();
+
+		bConditionMet = bisvalid;
+	}
+	else if (activationCombination_Fill.Num() > activationCondition.conditionCombination.Num())
+		ResetConditions();
+	else if(activationCombination_Fill.Num() > conditionButtons.Num())
+		ResetConditions();
+}
+
+bool AMovingPlattform::GetConditionsMet()
+{
+	bool status = false;
+
+	int valids = 0;
+
+	for(AMyButton* button : conditionButtons)
+	{
+		if (button->WasInteracted())
+			valids++;
+	}
+
+	if (valids >= conditionButtons.Num())
+		status = true;
+
+	return status;
 }
 
 void AMovingPlattform::BeginTimeline()
