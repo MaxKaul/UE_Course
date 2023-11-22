@@ -15,8 +15,9 @@ UPlayerInteractor::UPlayerInteractor()
 
 	crossHairSize = FVector2D(5.f);
 	interactableRange = 1000.f;
-}
 
+	viewPoint = CreateDefaultSubobject<UStaticMeshComponent>("Viewpoint");
+}
 
 // Called when the game starts
 void UPlayerInteractor::BeginPlay()
@@ -25,6 +26,10 @@ void UPlayerInteractor::BeginPlay()
 
 	world = GetWorld();
 	owner = Cast<AUE5_BeginnerCourseCharacter>(GetOwner());
+
+	normalMaterial = viewPoint->GetStaticMesh()->GetMaterial(0);
+
+	viewPoint->AttachToComponent(owner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Interactable_Socket"));
 }
 
 // Called every frame
@@ -63,6 +68,20 @@ void UPlayerInteractor::TraceInteractable()
 
 	if (hit.bBlockingHit)
 	{
-		DrawDebugSphere(world, hit.Location, 16, 16, FColor::Red, false, 1.f, 16, 16);
+		for (size_t i = 0; i < viewPoint->GetMaterials().Num(); i++)
+		{
+			if(viewPoint->GetMaterial(i))
+				viewPoint->SetMaterial(i, normalMaterial);
+		}
+
+		viewPoint->SetWorldLocation(hit.ImpactPoint, false, nullptr, ETeleportType::None);
+	}
+	else
+	{
+		for (size_t i = 0; i < viewPoint->GetMaterials().Num(); i++)
+		{
+			if (viewPoint->GetMaterial(i))
+				viewPoint->SetMaterial(i, transMaterial);
+		}
 	}
 }
