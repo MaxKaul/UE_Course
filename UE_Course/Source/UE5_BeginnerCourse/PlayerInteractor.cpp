@@ -38,7 +38,7 @@ void UPlayerInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (!owner || !world)
+	if (!owner || owner->GetHasDied() || !world)
 		return;
 
 	TraceInteractable();
@@ -67,7 +67,7 @@ void UPlayerInteractor::TraceInteractable()
 	UKismetSystemLibrary::LineTraceSingleByProfile(world, worldpos, worldpos + worlddir * interactableRange, "BlockAll", false, emptyactor, EDrawDebugTrace::None,
 		hit, true, FLinearColor::Transparent, FLinearColor::Transparent, 0);
 
-	if (hit.bBlockingHit)
+	if (hit.bBlockingHit && !owner->GetHasDied())
 	{
 		for (size_t i = 0; i < viewPoint->GetMaterials().Num(); i++)
 		{
@@ -79,6 +79,8 @@ void UPlayerInteractor::TraceInteractable()
 
 		if (AMyButton* button = Cast<AMyButton>(hit.GetActor()))
 			owner->SetCurrentButton(button);
+		else
+			owner->SetCurrentButton(nullptr);
 	}
 	else
 	{
@@ -87,5 +89,8 @@ void UPlayerInteractor::TraceInteractable()
 			if (viewPoint->GetMaterial(i))
 				viewPoint->SetMaterial(i, transMaterial);
 		}
+
+
+		owner->SetCurrentButton(nullptr);
 	}
 }

@@ -73,9 +73,32 @@ public:
 	UFUNCTION(BlueprintCallable) FORCEINLINE
 		void SetCurrentButton(class AMyButton* _currButton) { currentButton = _currButton; }
 
+	UFUNCTION()
+		void TakePlayerDamage(float _damage);
+
+	UFUNCTION()
+		void PlayPlayerDeath();
+	UFUNCTION()
+		void CleanAfterPlayerDeath();
+
+	UFUNCTION() FORCEINLINE
+		bool GetHasDied() {return bHasDied; }
+
 private:
 	UPROPERTY()
 		float currYaw;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stats, meta = (AllowPrivateAccess))
+		float playerHealth;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stats, meta = (AllowPrivateAccess))
+		bool bHasDied;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
+		TSubclassOf<class ABCPlayerStart> playerStartClass;
+
+	UPROPERTY()
+		class ABCPlayerStart* playerSpawn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly,Category=Comps, meta = (AllowPrivateAccess))
 		class UPlayerInteractor* playerInteractor;

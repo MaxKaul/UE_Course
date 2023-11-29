@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "UE5_BeginnerCourseCharacter.h"
+
+#include "BCPlayerStart.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -11,6 +13,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "MyButton.h"
 #include "PlayerInteractor.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -56,6 +60,9 @@ void AUE5_BeginnerCourseCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+
+	if (playerStartClass)
+		playerSpawn = Cast<ABCPlayerStart>(UGameplayStatics::GetActorOfClass(GetWorld(), playerStartClass));
 
 	//Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
@@ -108,6 +115,42 @@ void AUE5_BeginnerCourseCharacter::Interact()
 	}
 
 	currentButton->OnPlayerInteract();
+}
+
+void AUE5_BeginnerCourseCharacter::TakePlayerDamage(float _damage)
+{
+	float hp = playerHealth;
+
+	if (hp - _damage <= 0)
+	{
+		playerHealth = 0;
+		PlayPlayerDeath();
+	}
+	else
+		playerHealth -= _damage;
+}
+
+void AUE5_BeginnerCourseCharacter::PlayPlayerDeath()
+{
+	if(!playerSpawn)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("AUE5_BeginnerCourseCharacter, !playerSpawn"))
+		return;
+	}
+
+	bHasDied = true;
+
+	FTimerHandle timerhandle;
+	GetWorld()->GetTimerManager().SetTimer(timerhandle, this, &AUE5_BeginnerCourseCharacter::CleanAfterPlayerDeath, playerSpawn->GetRespawnTime(), false);
+
+	GetController()->UnPossess();
+	GetMesh()->SetSimulatePhysics(true);
+}
+
+void AUE5_BeginnerCourseCharacter::CleanAfterPlayerDeath()
+{
+	UWidgetLayoutLibrary::RemoveAllWidgets(GetWorld());
+	playerSpawn->RespawnPlayer(this);
 }
 
 void AUE5_BeginnerCourseCharacter::Move(const FInputActionValue& Value)
