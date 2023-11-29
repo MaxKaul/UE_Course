@@ -59,6 +59,8 @@ void AMovingPlattform::OnPlayerInteract()
 {
 	Super::OnPlayerInteract();
 
+	if (!bConditionMet) return;
+
 	if (!curveTimeline.IsPlaying())
 		BeginTimeline();
 }

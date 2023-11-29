@@ -39,6 +39,8 @@ void AMyButton::SetMaterialStatus()
 
 void AMyButton::SetButtonInactive()
 {
+	bWasInteracted = false;
+	objectMesh->SetMaterial(0, bWasDeactivatedMat);
 }
 
 void AMyButton::BeginPlay()

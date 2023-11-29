@@ -38,7 +38,7 @@ void UPlayerInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (!owner || !world)
+	if (!owner || !world || owner->GetHasDied())
 		return;
 
 	TraceInteractable();
@@ -79,6 +79,8 @@ void UPlayerInteractor::TraceInteractable()
 
 		if (AMyButton* button = Cast<AMyButton>(hit.GetActor()))
 			owner->SetCurrentButton(button);
+		else
+			owner->SetCurrentButton(nullptr);
 	}
 	else
 	{
@@ -87,5 +89,7 @@ void UPlayerInteractor::TraceInteractable()
 			if (viewPoint->GetMaterial(i))
 				viewPoint->SetMaterial(i, transMaterial);
 		}
+		owner->SetCurrentButton(nullptr);
+
 	}
 }

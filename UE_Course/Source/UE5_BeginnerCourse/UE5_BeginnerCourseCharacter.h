@@ -61,6 +61,7 @@ protected:
 
 	virtual void Interact();
 
+
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -72,10 +73,30 @@ public:
 
 	UFUNCTION(BlueprintCallable) FORCEINLINE
 		void SetCurrentButton(class AMyButton* _currButton) { currentButton = _currButton; }
+	UFUNCTION()
+		void TakePlayerDamage(float _damage);
+	UFUNCTION()
+		virtual void PlayPlayerDeath();
+	UFUNCTION()
+		virtual void CleanAfterPlayerDeath();
+	UFUNCTION() FORCEINLINE
+		bool GetHasDied() { return hasDied; }
 
 private:
+
 	UPROPERTY()
 		float currYaw;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stats, meta = (AllowPrivateAccess))
+		float playerHealth;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stats, meta = (AllowPrivateAccess))
+		bool hasDied;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
+		TSubclassOf<class ABCPlayerStart> playerStartClass;
+
+	UPROPERTY()
+		class ABCPlayerStart* playerStart;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
 		class UPlayerInteractor* playerInteractor;
