@@ -46,7 +46,7 @@ void ATrapBase::Tick(float DeltaTime)
 void ATrapBase::PlayerHit_OnOverlapBegin(UPrimitiveComponent* _overlappedComponent, AActor* _overlapActor,
 	UPrimitiveComponent* _otherComp, int32 _otheridx, bool bSweep, const FHitResult& _sweepResult)
 {
-	if(!_otherComp->ComponentHasTag("Interactor"))
+	if(!_otherComp->ComponentHasTag("PlayerInteractor"))
 	{
 		if(AUE5_BeginnerCourseCharacter* player = Cast<AUE5_BeginnerCourseCharacter>(_overlapActor))
 			MakeDamage(player);

@@ -54,6 +54,8 @@ AUE5_BeginnerCourseCharacter::AUE5_BeginnerCourseCharacter()
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 	playerInteractor = CreateDefaultSubobject<UPlayerInteractor>("Player Interactor");
+
+	playerMesh = GetMesh();
 }
 
 void AUE5_BeginnerCourseCharacter::BeginPlay()
@@ -144,7 +146,7 @@ void AUE5_BeginnerCourseCharacter::PlayPlayerDeath()
 	GetWorld()->GetTimerManager().SetTimer(timerhandle, this, &AUE5_BeginnerCourseCharacter::CleanAfterPlayerDeath, playerSpawn->GetRespawnTime(), false);
 
 	GetController()->UnPossess();
-	GetMesh()->SetSimulatePhysics(true);
+	playerMesh->SetSimulatePhysics(true);
 }
 
 void AUE5_BeginnerCourseCharacter::CleanAfterPlayerDeath()

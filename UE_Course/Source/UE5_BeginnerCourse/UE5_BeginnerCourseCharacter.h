@@ -84,6 +84,9 @@ public:
 	UFUNCTION() FORCEINLINE
 		bool GetHasDied() {return bHasDied; }
 
+	UFUNCTION(BlueprintCallable) FORCEINLINE
+		float GetCurrentHealth() { return playerHealth; }
+
 private:
 	UPROPERTY()
 		float currYaw;
@@ -105,4 +108,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Comps, meta = (AllowPrivateAccess))
 		class AMyButton* currentButton;
+
+	UPROPERTY()
+		USkeletalMeshComponent* playerMesh;
 };

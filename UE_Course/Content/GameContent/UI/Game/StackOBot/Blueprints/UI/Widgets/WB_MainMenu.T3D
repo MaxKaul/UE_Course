@@ -1,0 +1,103 @@
+Begin Object Class=/Script/UMGEditor.WidgetBlueprint Name="WB_MainMenu" ExportPath=/Script/UMGEditor.WidgetBlueprint'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu"'
+   Begin Object Class=/Script/Engine.EdGraph Name="EventGraph" ExportPath=/Script/Engine.EdGraph'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:EventGraph"'
+   End Object
+   Begin Object Class=/Script/UMG.WidgetTree Name="WidgetTree" Archetype=/Script/UMG.WidgetTree'/Script/UMGEditor.Default__WidgetBlueprint:WidgetTree' ExportPath=/Script/UMG.WidgetTree'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree"'
+      Begin Object Class=/Game/StackOBot/Blueprints/UI/Widgets/WB_Button_StarGame.WB_Button_StarGame_C Name="WB_Button_StarGame" ExportPath=/Game/StackOBot/Blueprints/UI/Widgets/WB_Button_StarGame.WB_Button_StarGame_C'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.WB_Button_StarGame"'
+      End Object
+      Begin Object Class=/Game/StackOBot/Blueprints/UI/Widgets/WB_Button_Quit.WB_Button_Quit_C Name="WB_Button_Quit" ExportPath=/Game/StackOBot/Blueprints/UI/Widgets/WB_Button_Quit.WB_Button_Quit_C'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.WB_Button_Quit"'
+      End Object
+      Begin Object Class=/Script/UMG.TextBlock Name="TextBlock_175" ExportPath=/Script/UMG.TextBlock'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.TextBlock_175"'
+      End Object
+      Begin Object Class=/Script/UMG.GridPanel Name="GridPanel_162" ExportPath=/Script/UMG.GridPanel'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.GridPanel_162"'
+         Begin Object Class=/Script/UMG.GridSlot Name="GridSlot_3" ExportPath=/Script/UMG.GridSlot'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.GridPanel_162.GridSlot_3"'
+         End Object
+         Begin Object Class=/Script/UMG.GridSlot Name="GridSlot_0" ExportPath=/Script/UMG.GridSlot'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.GridPanel_162.GridSlot_0"'
+         End Object
+         Begin Object Class=/Script/UMG.GridSlot Name="GridSlot_17" ExportPath=/Script/UMG.GridSlot'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.GridPanel_162.GridSlot_17"'
+         End Object
+      End Object
+      Begin Object Class=/Script/UMG.CanvasPanel Name="CanvasPanel_8" ExportPath=/Script/UMG.CanvasPanel'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.CanvasPanel_8"'
+         Begin Object Class=/Script/UMG.CanvasPanelSlot Name="CanvasPanelSlot_4" ExportPath=/Script/UMG.CanvasPanelSlot'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.CanvasPanel_8.CanvasPanelSlot_4"'
+         End Object
+      End Object
+   End Object
+   Begin Object Name="EventGraph" ExportPath=/Script/Engine.EdGraph'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:EventGraph"'
+      Schema=/Script/CoreUObject.Class'"/Script/BlueprintGraph.EdGraphSchema_K2"'
+      bAllowDeletion=False
+      GraphGuid=003E1E884302EEE41C783FAF2F4F95D8
+   End Object
+   Begin Object Name="WidgetTree" ExportPath=/Script/UMG.WidgetTree'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree"'
+      Begin Object Name="WB_Button_StarGame" ExportPath=/Game/StackOBot/Blueprints/UI/Widgets/WB_Button_StarGame.WB_Button_StarGame_C'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.WB_Button_StarGame"'
+         Slot=/Script/UMG.GridSlot'"WB_MainMenu:WidgetTree.GridPanel_162.GridSlot_3"'
+      End Object
+      Begin Object Name="WB_Button_Quit" ExportPath=/Game/StackOBot/Blueprints/UI/Widgets/WB_Button_Quit.WB_Button_Quit_C'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.WB_Button_Quit"'
+         Slot=/Script/UMG.GridSlot'"WB_MainMenu:WidgetTree.GridPanel_162.GridSlot_0"'
+      End Object
+      Begin Object Name="TextBlock_175" ExportPath=/Script/UMG.TextBlock'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.TextBlock_175"'
+         Text=NSLOCTEXT("[A9F0A90A4BCC00FB279AA09681EDB6D2]", "4F772E924E36A54418908DAC69932BE6", "Menu")
+         Font=(Size=50)
+         Slot=/Script/UMG.GridSlot'"WB_MainMenu:WidgetTree.GridPanel_162.GridSlot_17"'
+      End Object
+      Begin Object Name="GridPanel_162" ExportPath=/Script/UMG.GridPanel'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.GridPanel_162"'
+         Begin Object Name="GridSlot_3" ExportPath=/Script/UMG.GridSlot'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.GridPanel_162.GridSlot_3"'
+            Row=1
+            Column=1
+            Parent=/Script/UMG.GridPanel'"WB_MainMenu:WidgetTree.GridPanel_162"'
+            Content=/Game/StackOBot/Blueprints/UI/Widgets/WB_Button_StarGame.WB_Button_StarGame_C'"WB_MainMenu:WidgetTree.WB_Button_StarGame"'
+         End Object
+         Begin Object Name="GridSlot_0" ExportPath=/Script/UMG.GridSlot'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.GridPanel_162.GridSlot_0"'
+            Row=5
+            Column=1
+            Parent=/Script/UMG.GridPanel'"WB_MainMenu:WidgetTree.GridPanel_162"'
+            Content=/Game/StackOBot/Blueprints/UI/Widgets/WB_Button_Quit.WB_Button_Quit_C'"WB_MainMenu:WidgetTree.WB_Button_Quit"'
+         End Object
+         Begin Object Name="GridSlot_17" ExportPath=/Script/UMG.GridSlot'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.GridPanel_162.GridSlot_17"'
+            HorizontalAlignment=HAlign_Center
+            VerticalAlignment=VAlign_Center
+            Column=1
+            Parent=/Script/UMG.GridPanel'"WB_MainMenu:WidgetTree.GridPanel_162"'
+            Content=/Script/UMG.TextBlock'"WB_MainMenu:WidgetTree.TextBlock_175"'
+         End Object
+         ColumnFill(0)=100.000000
+         ColumnFill(1)=100.000000
+         ColumnFill(2)=100.000000
+         RowFill(0)=200.000000
+         RowFill(1)=100.000000
+         RowFill(2)=50.000000
+         RowFill(3)=100.000000
+         RowFill(4)=50.000000
+         RowFill(5)=100.000000
+         RowFill(6)=50.000000
+         RowFill(7)=100.000000
+         RowFill(8)=50.000000
+         Slots(0)=/Script/UMG.GridSlot'"GridSlot_17"'
+         Slots(1)=/Script/UMG.GridSlot'"GridSlot_0"'
+         Slots(2)=/Script/UMG.GridSlot'"GridSlot_3"'
+         Slot=/Script/UMG.CanvasPanelSlot'"WB_MainMenu:WidgetTree.CanvasPanel_8.CanvasPanelSlot_4"'
+         bExpandedInDesigner=True
+      End Object
+      Begin Object Name="CanvasPanel_8" ExportPath=/Script/UMG.CanvasPanel'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.CanvasPanel_8"'
+         Begin Object Name="CanvasPanelSlot_4" ExportPath=/Script/UMG.CanvasPanelSlot'"/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:WidgetTree.CanvasPanel_8.CanvasPanelSlot_4"'
+            LayoutData=(Offsets=(Right=0.000000,Bottom=0.000000),Anchors=(Maximum=(X=1.000000,Y=1.000000)))
+            Parent=/Script/UMG.CanvasPanel'"WB_MainMenu:WidgetTree.CanvasPanel_8"'
+            Content=/Script/UMG.GridPanel'"WB_MainMenu:WidgetTree.GridPanel_162"'
+         End Object
+         Slots(0)=/Script/UMG.CanvasPanelSlot'"CanvasPanelSlot_4"'
+         bExpandedInDesigner=True
+      End Object
+      RootWidget=/Script/UMG.CanvasPanel'"CanvasPanel_8"'
+   End Object
+   WidgetTree="WidgetTree"
+   ParentClass=/Script/CoreUObject.Class'"/Script/UMG.UserWidget"'
+   BlueprintSystemVersion=2
+   UbergraphPages(0)=/Script/Engine.EdGraph'"EventGraph"'
+   NewVariables(0)=(VarName="HUDManager",VarGuid=993D9488423270AA8D00239E11A77DD8,VarType=(PinCategory="object",PinSubCategoryObject=/Script/Engine.BlueprintGeneratedClass'"/Game/StackOBot/Blueprints/Manager/BP_HUDManager.BP_HUDManager_C"'),FriendlyName="HUDManager",Category=NSLOCTEXT("KismetSchema", "Default", "Default"),PropertyFlags=67589)
+   NewVariables(1)=(VarName="PlayerController",VarGuid=A8DCA93E4D00FCADC72573AD7946E587,VarType=(PinCategory="object",PinSubCategoryObject=/Script/CoreUObject.Class'"/Script/Engine.PlayerController"'),FriendlyName="Player Controller",Category=NSLOCTEXT("KismetSchema", "Default", "Default"),PropertyFlags=67589)
+   CategorySorting(0)="Default"
+   CategorySorting(1)=""
+   CategorySorting(2)="WB Main Menu"
+   LastEditedDocuments(0)=(EditedObjectPath="/Game/StackOBot/Blueprints/UI/Widgets/WB_MainMenu.WB_MainMenu:EventGraph",SavedZoomAmount=1.000000)
+   GeneratedClass=/Script/UMG.WidgetBlueprintGeneratedClass'"WB_MainMenu_C"'
+   bLegacyNeedToPurgeSkelRefs=False
+   BlueprintGuid=35C4C3434EC908F5F5907CACD02FE09E
+End Object
