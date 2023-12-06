@@ -67,7 +67,7 @@ void UPlayerInteractor::TraceInteractable()
 	UKismetSystemLibrary::LineTraceSingleByProfile(world, worldpos, worldpos + worlddir * interactableRange, "BlockAll", false, emptyactor, EDrawDebugTrace::None,
 		hit, true, FLinearColor::Transparent, FLinearColor::Transparent, 0);
 
-	if (hit.bBlockingHit)
+	if (hit.bBlockingHit&&!owner->GetHasDied())
 	{
 		for (size_t i = 0; i < viewPoint->GetMaterials().Num(); i++)
 		{
@@ -81,6 +81,10 @@ void UPlayerInteractor::TraceInteractable()
 		{
 			owner->SetCurrentButton(button);
 		}
+		else
+		{
+			owner->SetCurrentButton(nullptr);
+		}
 	}
 	else
 	{
@@ -89,5 +93,6 @@ void UPlayerInteractor::TraceInteractable()
 			if (viewPoint->GetMaterial(i))
 				viewPoint->SetMaterial(i, transMaterial);
 		}
+		owner->SetCurrentButton(nullptr);
 	}
 }

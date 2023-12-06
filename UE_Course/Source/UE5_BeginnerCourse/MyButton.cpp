@@ -12,12 +12,13 @@ AMyButton::AMyButton()
 void AMyButton::OnPlayerInteract()
 {
 	Super::OnPlayerInteract();
-
+	
 
 	if(!buttonOwner)
 	{
-		
+		return;
 	}
+
 
 	buttonOwner->ConditonCallback(bWasInteracted,buttonID);
 	SetMaterialStatus();
@@ -37,7 +38,8 @@ void AMyButton::SetMaterialStatus()
 
 void AMyButton::SetButtonInactive()
 {
-
+	bWasInteracted = false;
+	objectMesh->SetMaterial(0, wasDeActivatedMat);
 }
 
 

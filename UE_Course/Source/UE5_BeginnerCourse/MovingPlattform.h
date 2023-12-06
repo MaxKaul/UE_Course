@@ -36,6 +36,7 @@ public:
 
 protected:
 	UFUNCTION()
+	
 		virtual bool GetConditionsMet();
 
 	UFUNCTION()

@@ -49,11 +49,17 @@ void AMovingPlattform::Tick(float DeltaSeconds)
 void AMovingPlattform::BeginPlay()
 {
 	Super::BeginPlay();
+	InitConditons();
 }
 
 void AMovingPlattform::OnPlayerInteract()
 {
 	Super::OnPlayerInteract();
+
+	if(!bConditionMet)
+	{
+		return;
+	}
 
 	if(!curveTimeline.IsPlaying())
 		BeginTimeline();
@@ -101,7 +107,7 @@ void AMovingPlattform::ConditonCallback(bool _status, int _objectID)
 {
 	if(_status)
 	{
-		if(activationCombination_Fill.Contains(_objectID))
+		if(!activationCombination_Fill.Contains(_objectID))
 		{
 			activationCombination_Fill.Add(_objectID);
 		}
