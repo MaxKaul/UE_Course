@@ -5,11 +5,12 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "Interface_Damagable.h"
 #include "UE5_BeginnerCourseCharacter.generated.h"
 
 
 UCLASS(config=Game)
-class AUE5_BeginnerCourseCharacter : public ACharacter
+class AUE5_BeginnerCourseCharacter : public ACharacter, public IInterface_Damagable
 {
 	GENERATED_BODY()
 
