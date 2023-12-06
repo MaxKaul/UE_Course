@@ -3,17 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "EnumLibrary.h"
 #include "GameFramework/Character.h"
 #include "EnemyBase.generated.h"
 
-USTRUCT()
-struct FEnemyOptionals
-{
-	GENERATED_BODY()
-
-public:
-	TOptional<class AUE5_BeginnerCourseCharacter*> player;
-};
 
 UCLASS()
 class UE5_BEGINNERCOURSE_API AEnemyBase : public ACharacter
@@ -45,10 +38,70 @@ protected:
 	USphereComponent* damageCollider;
 
 	UPROPERTY()
-		FEnemyOptionals enemyOptionals;
+		EEnemyStates currentState;
+
+	UPROPERTY()
+		class UNavigationSystemV1* navigationSystem;
+
+	UPROPERTY()
+		class AAIController* enemyController;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = EnemyInfo, meta = (AllowPrivateAccess))
+		float enemyPatrolRange;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = EnemyInfo, meta = (AllowPrivateAccess))
+		float enemyDamage;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = EnemyInfo, meta = (AllowPrivateAccess))
+		float attackCooldwon;
+
+	UPROPERTY()
+		 UPawnMovementComponent* movemenmtComp;
+
+	UFUNCTION()
+		void SetState(EEnemyStates _newState);
+
+	UFUNCTION()
+		void TickState();
+
+	UFUNCTION()
+		void State_Patrol();
+	UFUNCTION()
+		void State_HuntPlayer();
+	UFUNCTION()
+		void State_AttackPlayer();
+
+	UFUNCTION()
+		void ResetCooldown();
+
+	UPROPERTY()
+		bool bCanAttack;
+
+	FTimerHandle handle;
+
+	friend struct FEnemyOptionals;
+
+	FEnemyOptionals* enemyOptionals;
 
 public:	
 	virtual void Tick(float DeltaTime) override;
 
 
+};
+
+USTRUCT()
+struct FEnemyOptionals
+{
+	GENERATED_BODY()
+
+	FEnemyOptionals(){};
+
+	FEnemyOptionals(AEnemyBase* _owner) {owner = _owner; }
+
+private:
+	AEnemyBase* owner;
+
+public:
+	TOptional<class AUE5_BeginnerCourseCharacter*> player;
+
+	void MoveOrder(TOptional<FVector> targetPos, TOptional<AActor*> _targetActor);
 };
